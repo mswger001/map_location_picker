@@ -307,41 +307,43 @@ class _MapLocationPickerState extends State<MapLocationPicker> {
       body: Stack(
         children: [
           /// Google map view
-          GoogleMap(
-            minMaxZoomPreference: widget.minMaxZoomPreference,
-            onCameraMove: (CameraPosition position) {
-              /// set zoom level
-              _zoom = position.zoom;
-            },
-            initialCameraPosition: CameraPosition(
-              target: _initialPosition,
-              zoom: _zoom,
-            ),
-            onTap: (LatLng position) async {
-              _initialPosition = position;
-              final controller = await _controller.future;
-              controller.animateCamera(
-                  CameraUpdate.newCameraPosition(cameraPosition()));
-              _decodeAddress(
-                  Location(lat: position.latitude, lng: position.longitude));
-              setState(() {});
-            },
-            onMapCreated: (GoogleMapController controller) async {
-              _controller.complete(controller);
-            },
-            markers: {
-              Marker(
-                markerId: const MarkerId('one'),
-                position: _initialPosition,
+          Expanded(
+            child: GoogleMap(
+              minMaxZoomPreference: widget.minMaxZoomPreference,
+              onCameraMove: (CameraPosition position) {
+                /// set zoom level
+                _zoom = position.zoom;
+              },
+              initialCameraPosition: CameraPosition(
+                target: _initialPosition,
+                zoom: _zoom,
               ),
-            },
-            myLocationButtonEnabled: false,
-            myLocationEnabled: true,
-            zoomControlsEnabled: false,
-            padding: widget.padding,
-            compassEnabled: widget.compassEnabled,
-            liteModeEnabled: widget.liteModeEnabled,
-            mapType: widget.mapType,
+              onTap: (LatLng position) async {
+                _initialPosition = position;
+                final controller = await _controller.future;
+                controller.animateCamera(
+                    CameraUpdate.newCameraPosition(cameraPosition()));
+                _decodeAddress(
+                    Location(lat: position.latitude, lng: position.longitude));
+                setState(() {});
+              },
+              onMapCreated: (GoogleMapController controller) async {
+                _controller.complete(controller);
+              },
+              markers: {
+                Marker(
+                  markerId: const MarkerId('one'),
+                  position: _initialPosition,
+                ),
+              },
+              myLocationButtonEnabled: false,
+              myLocationEnabled: true,
+              zoomControlsEnabled: false,
+              padding: widget.padding,
+              compassEnabled: widget.compassEnabled,
+              liteModeEnabled: widget.liteModeEnabled,
+              mapType: widget.mapType,
+            ),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
